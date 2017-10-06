@@ -90,37 +90,41 @@ void CFileView::OnSize(UINT nType, int cx, int cy)
 
 void CFileView::FillFileView()
 {
-	HTREEITEM hRoot = m_wndFileView.InsertItem(_T("FakeApp files"), 0, 0);
+	HTREEITEM hRoot = m_wndFileView.InsertItem(_T("Accounts"), 0, 0);
 	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 
-	HTREEITEM hSrc = m_wndFileView.InsertItem(_T("FakeApp Source Files"), 0, 0, hRoot);
+	HTREEITEM hAssets = m_wndFileView.InsertItem(_T("Assets"), 0, 0, hRoot);
 
-	m_wndFileView.InsertItem(_T("FakeApp.cpp"), 1, 1, hSrc);
-	m_wndFileView.InsertItem(_T("FakeApp.rc"), 1, 1, hSrc);
-	m_wndFileView.InsertItem(_T("FakeAppDoc.cpp"), 1, 1, hSrc);
-	m_wndFileView.InsertItem(_T("FakeAppView.cpp"), 1, 1, hSrc);
-	m_wndFileView.InsertItem(_T("MainFrm.cpp"), 1, 1, hSrc);
-	m_wndFileView.InsertItem(_T("StdAfx.cpp"), 1, 1, hSrc);
+	HTREEITEM hCurrent = m_wndFileView.InsertItem(_T("Current Assets"), 0, 0, hAssets);
+	HTREEITEM hFixed = m_wndFileView.InsertItem(_T("Fixed Assets"), 0, 0, hAssets);
+	HTREEITEM hInvestments = m_wndFileView.InsertItem(_T("Investments"), 0, 0, hAssets);
+	
 
-	HTREEITEM hInc = m_wndFileView.InsertItem(_T("FakeApp Header Files"), 0, 0, hRoot);
+	HTREEITEM hInc = m_wndFileView.InsertItem(_T("Liabilities"), 0, 0, hRoot);
 
-	m_wndFileView.InsertItem(_T("FakeApp.h"), 2, 2, hInc);
-	m_wndFileView.InsertItem(_T("FakeAppDoc.h"), 2, 2, hInc);
-	m_wndFileView.InsertItem(_T("FakeAppView.h"), 2, 2, hInc);
-	m_wndFileView.InsertItem(_T("Resource.h"), 2, 2, hInc);
-	m_wndFileView.InsertItem(_T("MainFrm.h"), 2, 2, hInc);
-	m_wndFileView.InsertItem(_T("StdAfx.h"), 2, 2, hInc);
+	m_wndFileView.InsertItem(_T("AMEX PREF"), 2, 2, hInc);
+	m_wndFileView.InsertItem(_T("Citi Double Cash"), 2, 2, hInc);
 
-	HTREEITEM hRes = m_wndFileView.InsertItem(_T("FakeApp Resource Files"), 0, 0, hRoot);
+	HTREEITEM hRes = m_wndFileView.InsertItem(_T("Income"), 0, 0, hRoot);
 
-	m_wndFileView.InsertItem(_T("FakeApp.ico"), 2, 2, hRes);
-	m_wndFileView.InsertItem(_T("FakeApp.rc2"), 2, 2, hRes);
-	m_wndFileView.InsertItem(_T("FakeAppDoc.ico"), 2, 2, hRes);
-	m_wndFileView.InsertItem(_T("FakeToolbar.bmp"), 2, 2, hRes);
+	m_wndFileView.InsertItem(_T("Ally Bank Interest"), 2, 2, hRes);
+	m_wndFileView.InsertItem(_T("Barclays Interest"), 2, 2, hRes);
+
+	HTREEITEM hCashback = m_wndFileView.InsertItem(_T("Cashback"), 0, 0, hRes);
+	m_wndFileView.InsertItem(_T("amex"), 2, 2, hCashback);
+	m_wndFileView.InsertItem(_T("citi"), 2, 2, hCashback);
+
+	m_wndFileView.InsertItem(_T("CIT Interest"), 2, 2, hRes);
+	m_wndFileView.InsertItem(_T("Fannie Mae"), 2, 2, hRes);
 
 	m_wndFileView.Expand(hRoot, TVE_EXPAND);
-	m_wndFileView.Expand(hSrc, TVE_EXPAND);
+	m_wndFileView.Expand(hAssets, TVE_EXPAND);
 	m_wndFileView.Expand(hInc, TVE_EXPAND);
+	m_wndFileView.Expand(hCurrent, TVE_EXPAND);
+	m_wndFileView.Expand(hFixed, TVE_EXPAND);
+	m_wndFileView.Expand(hCashback, TVE_EXPAND);
+	m_wndFileView.Expand(hInvestments, TVE_EXPAND);
+
 }
 
 void CFileView::OnContextMenu(CWnd* pWnd, CPoint point)

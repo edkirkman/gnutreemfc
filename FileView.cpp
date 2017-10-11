@@ -90,7 +90,7 @@ void CFileView::OnSize(UINT nType, int cx, int cy)
 
 void CFileView::FillFileView()
 {
-	HTREEITEM hRoot = m_wndFileView.InsertItem(_T("Accounts"), 0, 0);
+	HTREEITEM hRoot = m_wndFileView.InsertItem(_T("Accounts"), 0, 0); //, TVI_ROOT, TVI_SORT???
 	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 
 	HTREEITEM hAssets = m_wndFileView.InsertItem(_T("Assets"), 0, 0, hRoot);
@@ -100,10 +100,10 @@ void CFileView::FillFileView()
 	HTREEITEM hInvestments = m_wndFileView.InsertItem(_T("Investments"), 0, 0, hAssets);
 	
 
-	HTREEITEM hInc = m_wndFileView.InsertItem(_T("Liabilities"), 0, 0, hRoot);
+	HTREEITEM hLiabilities = m_wndFileView.InsertItem(_T("Liabilities"), 0, 0, hRoot);
 
-	m_wndFileView.InsertItem(_T("AMEX PREF"), 2, 2, hInc);
-	m_wndFileView.InsertItem(_T("Citi Double Cash"), 2, 2, hInc);
+	m_wndFileView.InsertItem(_T("AMEX PREF"), 2, 2, hLiabilities);
+	m_wndFileView.InsertItem(_T("Citi Double Cash"), 2, 2, hLiabilities);
 
 	HTREEITEM hRes = m_wndFileView.InsertItem(_T("Income"), 0, 0, hRoot);
 
@@ -119,7 +119,7 @@ void CFileView::FillFileView()
 
 	m_wndFileView.Expand(hRoot, TVE_EXPAND);
 	m_wndFileView.Expand(hAssets, TVE_EXPAND);
-	m_wndFileView.Expand(hInc, TVE_EXPAND);
+	m_wndFileView.Expand(hLiabilities, TVE_EXPAND);
 	m_wndFileView.Expand(hCurrent, TVE_EXPAND);
 	m_wndFileView.Expand(hFixed, TVE_EXPAND);
 	m_wndFileView.Expand(hCashback, TVE_EXPAND);

@@ -18,7 +18,9 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnEditCopy();
 	afx_msg void OnEditClear();
+	afx_msg void OnWriteBuild();
 	afx_msg void OnViewOutput();
+
 
 	DECLARE_MESSAGE_MAP()
 };
@@ -41,6 +43,7 @@ protected:
 
 protected:
 	void FillBuildWindow();
+	void WriteBuildWindow(LPCTSTR lpszItem);
 	void FillDebugWindow();
 	void FillFindWindow();
 

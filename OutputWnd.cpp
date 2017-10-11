@@ -109,6 +109,18 @@ void COutputWnd::FillBuildWindow()
 	m_wndOutputBuild.AddString(_T("Build output is being displayed here."));
 	m_wndOutputBuild.AddString(_T("The output is being displayed in rows of a list view"));
 	m_wndOutputBuild.AddString(_T("but you can change the way it is displayed as you wish..."));
+	CString str;
+//	CString out = _T("ED again ");
+	for (int i = 0; i < 5; i++)
+	{
+		str.Format(_T("ED again %d"), i);
+		WriteBuildWindow(str);
+	}
+}
+
+void COutputWnd::WriteBuildWindow(LPCTSTR lpszItem)
+{
+	m_wndOutputBuild.AddString(lpszItem);
 }
 
 void COutputWnd::FillDebugWindow()
@@ -149,6 +161,7 @@ BEGIN_MESSAGE_MAP(COutputList, CListBox)
 	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
 	ON_COMMAND(ID_VIEW_OUTPUTWND, OnViewOutput)
 	ON_WM_WINDOWPOSCHANGING()
+	ON_COMMAND(ID_WRITE_BUILD, OnWriteBuild)
 END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // COutputList message handlers
@@ -197,3 +210,9 @@ void COutputList::OnViewOutput()
 
 	}
 }
+
+void COutputList::OnWriteBuild()
+{
+	MessageBox(_T("WriteBuild"));
+}
+

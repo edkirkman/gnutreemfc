@@ -52,13 +52,18 @@ BOOL CgnutreemfcView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CgnutreemfcView drawing
 
-void CgnutreemfcView::OnDraw(CDC* /*pDC*/)
+void CgnutreemfcView::OnDraw(CDC* pDC)
 {
 	CgnutreemfcDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
+	CString s = _T("Ed was here");   // Returns a CString
+	CRect rect;
+	GetClientRect(&rect);
 
+	pDC->SetTextAlign(TA_BASELINE | TA_CENTER);
+	pDC->TextOut(rect.right / 2, rect.bottom / 2, s, s.GetLength());
 	// TODO: add draw code for native data here
 }
 

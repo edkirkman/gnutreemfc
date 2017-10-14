@@ -19,6 +19,7 @@ public:
 
 // Operations
 public:
+	COutputWnd        m_wndOutput;
 
 // Overrides
 public:
@@ -40,7 +41,6 @@ protected:  // control bar embedded members
 	CMFCToolBarImages m_UserImages;
 	CFileView         m_wndFileView;
 	CClassView        m_wndClassView;
-	COutputWnd        m_wndOutput;
 	CPropertiesWnd    m_wndProperties;
 
 // Generated message map functions

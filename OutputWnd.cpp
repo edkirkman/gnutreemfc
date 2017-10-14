@@ -216,3 +216,11 @@ void COutputList::OnWriteBuild()
 	MessageBox(_T("WriteBuild"));
 }
 
+
+
+BOOL COutputWnd::OnCommand(WPARAM wParam, LPARAM lParam)
+{
+	// TODO: Add your specialized code here and/or call the base class
+
+	return CDockablePane::OnCommand(wParam, lParam);
+}

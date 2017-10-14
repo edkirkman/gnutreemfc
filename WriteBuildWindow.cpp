@@ -15,8 +15,6 @@ void WriteBuildWindow()
 
 	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
 	COutputWnd   wndOutput =     pMainFrame->m_wndOutput;
-	C pMainFrame->m_wndoutput;
-	pMainWnd - &gt; someFunction()_or_variable;
 
 
 	m_wndOutputBuild.AddString(_T("Build output is being displayed here."));

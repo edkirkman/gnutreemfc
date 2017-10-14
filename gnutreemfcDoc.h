@@ -17,7 +17,7 @@ public:
 
 // Operations
 public:
-
+	void Write_to_output(LPCTSTR lpszItem);
 // Overrides
 public:
 	virtual BOOL OnNewDocument();

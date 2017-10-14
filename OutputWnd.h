@@ -30,6 +30,8 @@ class COutputWnd : public CDockablePane
 // Construction
 public:
 	COutputWnd();
+	void WriteBuildWindow(LPCTSTR lpszItem);
+	COutputList m_wndOutputBuild;
 
 	void UpdateFonts();
 
@@ -37,13 +39,11 @@ public:
 protected:
 	CMFCTabCtrl	m_wndTabs;
 
-	COutputList m_wndOutputBuild;
 	COutputList m_wndOutputDebug;
 	COutputList m_wndOutputFind;
 
 protected:
 	void FillBuildWindow();
-	void WriteBuildWindow(LPCTSTR lpszItem);
 	void FillDebugWindow();
 	void FillFindWindow();
 
@@ -58,5 +58,6 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 
 	DECLARE_MESSAGE_MAP()
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 };
 

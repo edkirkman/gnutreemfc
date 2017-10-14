@@ -1,8 +1,52 @@
+#include "stdafx.h"
 
 // gnutreemfcDoc.cpp : implementation of the CgnutreemfcDoc class
 //
+#include <stdlib.h>
+#include <iostream>
+#include <sstream>
+#include <stdexcept>
 
-#include "stdafx.h"
+
+#include <boost/scoped_ptr.hpp>
+
+/*
+Public interface of the MySQL Connector/C++.
+You might not use it but directly include directly the different
+headers from cppconn/ and mysql_driver.h + mysql_util.h
+(and mysql_connection.h). This will reduce your build time!
+*/
+
+#ifndef MYSQL_PUBLIC_IFACE_H_
+#define MYSQL_PUBLIC_IFACE_H_
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/warning.h>
+#include <cppconn/metadata.h>
+#include <cppconn/prepared_statement.h>
+#include <cppconn/resultset.h>
+#include <cppconn/resultset_metadata.h>
+#include <cppconn/statement.h>
+/*#include <cppconn/connection.h"*/
+#include "mysql_driver.h"
+#include "mysql_connection.h"
+
+//#include <cppconn/types.h>
+
+#endif /* MYSQL_PUBLIC_IFACE_H_ */
+/*
+Public interface of the MySQL Connector/C++.
+You might not use it but directly include directly the different
+headers from cppconn/ and mysql_driver.h + mysql_util.h
+(and mysql_connection.h). This will reduce your build time!
+*/
+// #include <driver/mysql_public_iface.h>
+/* Connection parameter and sample data */
+#include "examples.h"
+
+using namespace std;
+
+
 // SHARED_HANDLERS can be defined in an ATL project implementing preview, thumbnail
 // and search filter handlers and allows sharing of document code with that project.
 #ifndef SHARED_HANDLERS
@@ -12,6 +56,8 @@
 #include "gnutreemfcDoc.h"
 
 #include <propkey.h>
+#include "MainFrm.h"
+#include "OutputWnd.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -32,6 +78,52 @@ END_MESSAGE_MAP()
 CgnutreemfcDoc::CgnutreemfcDoc()
 {
 	// TODO: add one-time construction code here
+	string url(EXAMPLE_HOST);
+	const string user(EXAMPLE_USER);
+	const string pass(EXAMPLE_PASS);
+	const string database(EXAMPLE_DB);
+
+	/* sql::ResultSet.rowsCount() returns size_t */
+	size_t row;
+	stringstream sql;
+	stringstream msg;
+	int i, affected_rows;
+
+	Write_to_output(_T("# Connector/C++ connect basic usage example.."));
+try {
+	sql::Driver * driver = sql::mysql::get_driver_instance();
+	/* Using the Driver to create a connection */
+	boost::scoped_ptr< sql::Connection > con(driver->connect(url, user, pass));
+
+	/* Creating a "simple" statement - "simple" = not a prepared statement */
+	boost::scoped_ptr< sql::Statement > stmt(con->createStatement());
+
+	/* Create a test table demonstrating the use of sql::Statement.execute() */
+	stmt->execute("USE " + database);
+}
+catch (sql::SQLException &e) {
+	/*
+	The MySQL Connector/C++ throws three different exceptions:
+
+	- sql::MethodNotImplementedException (derived from sql::SQLException)
+	- sql::InvalidArgumentException (derived from sql::SQLException)
+	- sql::SQLException (derived from std::runtime_error)
+	*/
+	Write_to_output(_T("# ERR: SQLException in "));
+
+#if 0
+	cout << "# ERR: SQLException in " << __FILE__;
+	cout << "(" << EXAMPLE_FUNCTION << ") on line " << __LINE__ << endl;
+	/* Use what() (derived from std::runtime_error) to fetch the error message */
+	cout << "# ERR: " << e.what();
+	cout << " (MySQL error code: " << e.getErrorCode();
+	cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+	cout << "not ok 1 - examples/connect.php" << endl;
+#endif
+}
+
+
+
 
 }
 
@@ -46,10 +138,19 @@ BOOL CgnutreemfcDoc::OnNewDocument()
 
 	// TODO: add reinitialization code here
 	// (SDI documents will reuse this document)
+	// just send a message to show this is called
+	Write_to_output(_T("Ed output from DOC class"));
 
 	return TRUE;
 }
 
+void CgnutreemfcDoc::Write_to_output(LPCTSTR lpszItem)
+{
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+
+	(pMainFrame->m_wndOutput).WriteBuildWindow(lpszItem);
+	return;
+}
 
 
 

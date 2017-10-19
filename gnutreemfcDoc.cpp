@@ -88,6 +88,9 @@ CgnutreemfcDoc::CgnutreemfcDoc()
 	stringstream sql;
 	stringstream msg;
 	int i, affected_rows;
+	CString str;
+	CStringW atl;
+	string dbstr;
 
 	Write_to_output(_T("# Connector/C++ connect basic usage example.."));
 try {
@@ -100,7 +103,58 @@ try {
 
 	/* Create a test table demonstrating the use of sql::Statement.execute() */
 	stmt->execute("USE " + database);
+
+
+
+	/*
+	Run a query which returns exactly one result set like SELECT
+	Stored procedures (CALL) may return more than one result set
+	*/
+	boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery("SELECT name FROM accounts"));
+	//			boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery("SELECT id, label FROM test ORDER BY id ASC"));
+	Write_to_output(_T("#\t Running 'SELECT name FROM accounts'\n"));
+
+	/* Number of rows in the result set */
+	Write_to_output(_T("#\t\t Number of rows\t"));
+
+	str.Format(_T("res->rowsCount() = %d \n"), res->rowsCount());
+	Write_to_output(str);
+	/*			if (res->rowsCount() != EXAMPLE_NUM_TEST_ROWS) {
+	msg.str("");
+	msg << "Expecting " << EXAMPLE_NUM_TEST_ROWS << "rows, found " << res->rowsCount();
+	throw runtime_error(msg.str());
+	}
+	*/
+
+	/* Fetching data */
+	row = 0;
+	while (res->next()) {
+
+		str.Format(_T("Fetching row %d"), row);
+		Write_to_output(str);
+//		cout << "#\t\t Fetching row " << row << "\t";
+		/* You can use either numeric offsets... */
+		//cout << "name = " << res->getString(1);
+
+/*		dbstr = res->getString(1);
+		//get str from databases
+		atl = CA2W(dbstr.c_str(), CP_UTF8);
+		str.Format(_T("name = %s"), atl);
+		Write_to_output(str);
+*/
+		/* ... or column names for accessing results. The latter is recommended. */
+		//cout << ", name = '" << res->getString("name") << "'" << endl;
+		dbstr = res->getString("name");
+		//get str from databases
+		atl = CA2W(dbstr.c_str(), CP_UTF8);
+
+		str.Format(_T("name = %s"), atl);
+		Write_to_output(str);
+
+		row++;
+	}
 }
+
 catch (sql::SQLException &e) {
 	/*
 	The MySQL Connector/C++ throws three different exceptions:

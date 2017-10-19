@@ -194,6 +194,7 @@
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="ClassView.h" />
+    <ClInclude Include="examples.h" />
     <ClInclude Include="FileView.h" />
     <ClInclude Include="gnutreemfc.h" />
     <ClInclude Include="gnutreemfcDoc.h" />

@@ -61,7 +61,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #endif
 
 // Connection properties
-#define EXAMPLE_DB   "gnucash"
+#define EXAMPLE_DB   "gnucashtest"
 #define EXAMPLE_HOST "tcp://127.0.0.1:3306"
 //#define EXAMPLE_USER "root"
 //#define EXAMPLE_PASS "root"

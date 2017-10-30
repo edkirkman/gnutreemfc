@@ -90,7 +90,17 @@ CgnutreemfcDoc::CgnutreemfcDoc()
 	int i, affected_rows;
 	CString str;
 	CStringW atl;
-	string dbstr;
+	CStringW atl1;
+	string dbstr1;
+	CStringW atl2;
+	string dbstr2;
+	CStringW atl3;
+	string dbstr3;
+	CStringW atl4;
+	string dbstr4;
+	CStringW atl5;
+	string dbstr5;
+
 
 	Write_to_output(_T("# Connector/C++ connect basic usage example.."));
 try {
@@ -110,7 +120,17 @@ try {
 	Run a query which returns exactly one result set like SELECT
 	Stored procedures (CALL) may return more than one result set
 	*/
-	boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery("SELECT name FROM accounts"));
+//	boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery("SELECT name FROM accounts"));
+
+	boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery(
+		"select t1.name as levl0, t1.guid as guid0, t2.name as levl1, t2.guid as guid1, t3.name as levl2, t3.guid as guid2, t4.name levl3, t4.guid as guid3, t5.name levl4, t5.guid as guid4, t6.name levl5, t6.guid as guid5 "
+		"from accounts as t1 "
+		"left join accounts as t2 on t2.parent_guid = t1.guid "
+		"left join accounts as t3 on t3.parent_guid = t2.guid "
+		"left join accounts as t4 on t4.parent_guid = t3.guid "
+		"left join accounts as t5 on t5.parent_guid = t4.guid "
+		"left join accounts as t6 on t6.parent_guid = t5.guid "
+		"where t1.name = 'Root Account' order by levl0,levl1,levl2,levl3,levl4,levl5;"));
 	//			boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery("SELECT id, label FROM test ORDER BY id ASC"));
 	Write_to_output(_T("#\t Running 'SELECT name FROM accounts'\n"));
 
@@ -130,8 +150,8 @@ try {
 	row = 0;
 	while (res->next()) {
 
-		str.Format(_T("Fetching row %d"), row);
-		Write_to_output(str);
+//		str.Format(_T("Fetching row %d"), row);
+//		Write_to_output(str);
 //		cout << "#\t\t Fetching row " << row << "\t";
 		/* You can use either numeric offsets... */
 		//cout << "name = " << res->getString(1);
@@ -144,12 +164,28 @@ try {
 */
 		/* ... or column names for accessing results. The latter is recommended. */
 		//cout << ", name = '" << res->getString("name") << "'" << endl;
-		dbstr = res->getString("name");
+		dbstr1 = res->getString("levl1");
+//		dbstr = res->getString("name");
 		//get str from databases
-		atl = CA2W(dbstr.c_str(), CP_UTF8);
+		atl1 = CA2W(dbstr1.c_str(), CP_UTF8);
+		dbstr2 = res->getString("levl2");
+		atl2 = CA2W(dbstr2.c_str(), CP_UTF8);
+		dbstr3 = res->getString("levl3");
+		atl3 = CA2W(dbstr3.c_str(), CP_UTF8);
+		dbstr4 = res->getString("levl4");
+		atl4 = CA2W(dbstr4.c_str(), CP_UTF8);
+		dbstr5 = res->getString("levl5");
+		atl5 = CA2W(dbstr5.c_str(), CP_UTF8);
+		if (atl3 == L"")
+		str.Format(_T("%s_%s"), atl1, atl2);
+		else if (atl4 == L"")
+		str.Format(_T("%s_%s_%s"), atl1, atl2, atl3);
+		else if (atl5 == L"")
+		str.Format(_T("%s_%s_%s_%s"), atl1, atl2, atl3, atl4);
+		else 
+		str.Format(_T("%s_%s_%s_%s_%s"), atl1, atl2, atl3, atl4, atl5);
 
-		str.Format(_T("name = %s"), atl);
-		Write_to_output(str);
+			Write_to_output(str);
 
 		row++;
 	}
@@ -164,6 +200,15 @@ catch (sql::SQLException &e) {
 	- sql::SQLException (derived from std::runtime_error)
 	*/
 	Write_to_output(_T("# ERR: SQLException in "));
+//	cout << "# ERR: " << e.what();
+	atl = CA2W(e.what(), CP_UTF8);
+
+	str.Format(_T("name = %s"), atl);
+	Write_to_output(str);
+
+//	cout << " (MySQL error code: " << e.getErrorCode();
+//	cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+
 
 #if 0
 	cout << "# ERR: SQLException in " << __FILE__;

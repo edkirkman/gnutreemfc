@@ -120,9 +120,20 @@ try {
 	Run a query which returns exactly one result set like SELECT
 	Stored procedures (CALL) may return more than one result set
 	*/
-//	boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery("SELECT name FROM accounts"));
+	stmt->execute("DROP TABLE IF EXISTS acctreeguid");
+	stmt->execute("create temporary table acctreeguid "
+		"select t2.name as levl1, t2.guid as guid1, t3.name as levl2, t3.guid as guid2, t4.name levl3, t4.guid as guid3, t5.name levl4, t5.guid as guid4, t6.name levl5, t6.guid as guid5, t7.name levl6, t7.guid guid6 "
+		"from accounts as t1 "
+		"left join accounts as t2 on t2.parent_guid = t1.guid "
+		"left join accounts as t3 on t3.parent_guid = t2.guid "
+		"left join accounts as t4 on t4.parent_guid = t3.guid "
+		"left join accounts as t5 on t5.parent_guid = t4.guid "
+		"left join accounts as t6 on t6.parent_guid = t5.guid "
+		"left join accounts as t7 on t7.parent_guid = t6.guid "
+		"where t1.name = 'Root Account' "
 
-	boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery(
+		"order  by t2.name, t3.name, t4.name, t5.name, t6.name, t7.name; ");
+/*	boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery(
 		"select t1.name as levl0, t1.guid as guid0, t2.name as levl1, t2.guid as guid1, t3.name as levl2, t3.guid as guid2, t4.name levl3, t4.guid as guid3, t5.name levl4, t5.guid as guid4, t6.name levl5, t6.guid as guid5 "
 		"from accounts as t1 "
 		"left join accounts as t2 on t2.parent_guid = t1.guid "
@@ -130,8 +141,15 @@ try {
 		"left join accounts as t4 on t4.parent_guid = t3.guid "
 		"left join accounts as t5 on t5.parent_guid = t4.guid "
 		"left join accounts as t6 on t6.parent_guid = t5.guid "
-		"where t1.name = 'Root Account' order by levl0,levl1,levl2,levl3,levl4,levl5;"));
-	//			boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery("SELECT id, label FROM test ORDER BY id ASC"));
+		"where t1.name = 'Root Account' order by levl0,levl1,levl2,levl3,levl4,levl5;")); */
+	boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery(
+		"select acctreeguid.levl1, acctreeguid.levl2, acctreeguid.levl3, acctreeguid.levl4, acctreeguid.levl5, acctreeguid.levl6, transactions.post_date, transactions.description, splits.account_guid, splits.value_num / splits.value_denom from transactions "
+		"INNER JOIN "
+		"splits ON splits.tx_guid = transactions.guid "
+		"INNER JOIN "
+		"acctreeguid ON acctreeguid.guid1 = splits.account_guid or acctreeguid.guid2 = splits.account_guid or acctreeguid.guid3 = splits.account_guid or acctreeguid.guid4 = splits.account_guid or acctreeguid.guid5 = splits.account_guid "
+		"order by levl1, levl2, levl3, levl4, levl5, post_date;"));
+				//			boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery("SELECT id, label FROM test ORDER BY id ASC"));
 	Write_to_output(_T("#\t Running 'SELECT name FROM accounts'\n"));
 
 	/* Number of rows in the result set */

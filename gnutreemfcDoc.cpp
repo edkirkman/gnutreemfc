@@ -94,7 +94,7 @@ CgnutreemfcDoc::CgnutreemfcDoc()
 
 
 	Write_to_output(_T("# Connector/C++ connect basic usage example.."));
-	InsertItem(_T("Ed2 was here"), 0, 0, NULL);
+
 try {
 	sql::Driver * driver = sql::mysql::get_driver_instance();
 	/* Using the Driver to create a connection */
@@ -155,7 +155,7 @@ try {
 	/* Fetching data */
 	row = 0;
 	InitTree();
-	FillRoot(_T("EdTree"), 0, 0);
+	FillRoot(_T("Accounts"), 0, 0);
 	while (res->next()) {
 
 //		str.Format(_T("Fetching row %d"), row);
@@ -194,10 +194,14 @@ try {
 		str.Format(_T("%s_%s_%s_%s_%s"), atl1, atl2, atl3, atl4, atl5);
 
 			Write_to_output(str);
-			if (row == 0) AddToTree();
+			AddToTree();
 
 		row++;
 	}
+	ExpandTree();
+	str.Format(_T("Accounts processed = %d \n"), row);
+	Write_to_output(str);
+
 }
 
 catch (sql::SQLException &e) {
@@ -277,41 +281,117 @@ void CgnutreemfcDoc::FillRoot(LPCTSTR level, int nImage, int nSelectedImage)
 	(pMainFrame->m_wndFileView).m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 }
 
-void CgnutreemfcDoc::AddToTree()
+void CgnutreemfcDoc::ExpandTree()
+{
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+	(pMainFrame->m_wndFileView).m_wndFileView.Expand(hRoot, TVE_EXPAND);
+}
+
+
+
+	void CgnutreemfcDoc::AddToTree()
 {
 	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
 	// AddToTree()
-	// level1	If atl1 is null      all levels done, return
-	if (atl1.IsEmpty()) return;
+//level1:
+	// level1	If atl1 is null      all levels done, reset catl1, return
+	if (atl1.IsEmpty())
+	{
+		catl1.Empty();
+		return;
+	}
 	// If atl1 != catl, new level1, so insert in hroot and save hatl1 and catl1
-if (atl1 != catl1)
+	if (atl1 != catl1)
 	{
 	hl1 = (pMainFrame->m_wndFileView).m_wndFileView.InsertItem(atl1, 0, 0, hRoot);
-	atl1 = catl1;
+
+	catl1 =atl1;
+	catl2.Empty(), catl3.Empty(), catl4.Empty(), catl5.Empty(), catl6.Empty();
 	}
 	//			goto level2
 	//
-	// level2   If atl2 is null      all level 2 done, so reset catl2 to null
+//level2:
+	// level2   If atl2 is null      all level 2 done, so reset catl2, return
+	if (atl2.IsEmpty())
+	{
+		catl2.Empty();
+		return;
+	}
 	//			If atl2 != cat2, new level2, so insert in hatl1 and save hatl2 and catl2
+	if (atl2 != catl2)
+	{
+		hl2 = (pMainFrame->m_wndFileView).m_wndFileView.InsertItem(atl2, 0, 0, hl1);
+		catl2 = atl2;
+		catl3.Empty(), catl4.Empty(), catl5.Empty(), catl6.Empty();
+	}
 	//			goto level3
 	//
-	// level3   If atl3 is null      all level 3 done, so reset catl3 to null
+//level3:
+	// level3   If atl3 is null      all level 3 done, so reset catl3, return
+	if (atl3.IsEmpty())
+	{
+		catl3.Empty();
+		return;
+	}
 	//			If atl3 != cat3, new level3, so insert in hatl2 and save hatl3 and catl3
+	if (atl3 != catl3)
+	{
+		hl3 = (pMainFrame->m_wndFileView).m_wndFileView.InsertItem(atl3, 0, 0, hl2);
+		catl3 = atl3;
+		catl4.Empty(), catl5.Empty(), catl6.Empty();
+	}
 	//			goto level4
 	//
-	// level4   If atl4 is null      all level 4 done, so reset catl4 to null
+//level4:
+	// level4   If atl4 is null      all level 4 done, so reset catl4, return
+	if (atl4.IsEmpty())
+	{
+		catl4.Empty();
+		return;
+	}
 	//			If atl4 != cat4, new level4, so insert in hatl3 and save hatl4 and catl4
+	if (atl4 != catl4)
+	{
+		hl4 = (pMainFrame->m_wndFileView).m_wndFileView.InsertItem(atl4, 0, 0, hl3);
+		catl4 = atl4;
+		catl5.Empty(), catl6.Empty();
+	}
 	//			goto level5
 	//
-	// level5   If atl5 is null      all level 5 done, so reset catl5 to null
+//level5:
+	// level5   If atl5 is null      all level 5 done, so reset catl5, return
+	if (atl5.IsEmpty())
+	{
+		catl5.Empty();
+		return;
+	}
 	//			If atl5 != cat5, new level5, so insert in hatl4 and save hatl5 and catl5
+	if (atl5 != catl5)
+	{
+		hl5 = (pMainFrame->m_wndFileView).m_wndFileView.InsertItem(atl5, 0, 0, hl4);
+		catl5 = atl5;
+		catl6.Empty();
+	}
 	//			goto level6
 	//
-	// level6   If atl6 is null      all level 6 done, so reset catl6 to null
+//level6:
+	// level6   If atl6 is null      all level 6 done, so reset catl6, return
+	if (atl6.IsEmpty())
+	{
+		catl6.Empty();
+		return;
+	}
 	//			If atl6 != cat6, new level6, so insert in hatl5 and save hatl6 and catl6
+	if (atl6 != catl6)
+	{
+		hl6 = (pMainFrame->m_wndFileView).m_wndFileView.InsertItem(atl6, 0, 0, hl5);
+		catl6 = atl6;
+	}
 	//			put out error message "too many levels" and return
+	Write_to_output(_T("too many levels"));
+	return;
 
-	// insert level0
+
 }
 
 

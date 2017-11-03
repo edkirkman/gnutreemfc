@@ -90,6 +90,7 @@ void CFileView::OnSize(UINT nType, int cx, int cy)
 
 void CFileView::FillFileView()
 {
+	return;
 	// insert level0
 	HTREEITEM hRoot = m_wndFileView.InsertItem(_T("Accounts"), 0, 0); //, TVI_ROOT, TVI_SORT???
 	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);

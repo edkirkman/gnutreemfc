@@ -46,6 +46,8 @@ protected:
 	void InitTree();
 	void FillRoot(LPCTSTR level, int nImage, int nSelectedImage);
 	void AddToTree();
+	void ExpandTree();
+
 
 
 // Generated message map functions

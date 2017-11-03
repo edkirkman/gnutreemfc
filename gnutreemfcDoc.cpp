@@ -90,19 +90,11 @@ CgnutreemfcDoc::CgnutreemfcDoc()
 	int i, affected_rows;
 	CString str;
 	CStringW atl;
-	CStringW atl1;
-	string dbstr1;
-	CStringW atl2;
-	string dbstr2;
-	CStringW atl3;
-	string dbstr3;
-	CStringW atl4;
-	string dbstr4;
-	CStringW atl5;
-	string dbstr5;
+	string dbstr1, dbstr2, dbstr3, dbstr4, dbstr5;
 
 
 	Write_to_output(_T("# Connector/C++ connect basic usage example.."));
+	InsertItem(_T("Ed2 was here"), 0, 0, NULL);
 try {
 	sql::Driver * driver = sql::mysql::get_driver_instance();
 	/* Using the Driver to create a connection */
@@ -132,24 +124,20 @@ try {
 		"left join accounts as t7 on t7.parent_guid = t6.guid "
 		"where t1.name = 'Root Account' "
 
-		"order  by t2.name, t3.name, t4.name, t5.name, t6.name, t7.name; ");
-/*	boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery(
-		"select t1.name as levl0, t1.guid as guid0, t2.name as levl1, t2.guid as guid1, t3.name as levl2, t3.guid as guid2, t4.name levl3, t4.guid as guid3, t5.name levl4, t5.guid as guid4, t6.name levl5, t6.guid as guid5 "
-		"from accounts as t1 "
-		"left join accounts as t2 on t2.parent_guid = t1.guid "
-		"left join accounts as t3 on t3.parent_guid = t2.guid "
-		"left join accounts as t4 on t4.parent_guid = t3.guid "
-		"left join accounts as t5 on t5.parent_guid = t4.guid "
-		"left join accounts as t6 on t6.parent_guid = t5.guid "
-		"where t1.name = 'Root Account' order by levl0,levl1,levl2,levl3,levl4,levl5;")); */
+		"order  by levl1,levl2,levl3,levl4,levl5,levl6; ");
 	boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery(
+		"select levl1,levl2,levl3,levl4,levl5,levl6 from acctreeguid"));
+
+	// use the acctreeguid table levels to build the accounts tree
+
+/*	boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery(
 		"select acctreeguid.levl1, acctreeguid.levl2, acctreeguid.levl3, acctreeguid.levl4, acctreeguid.levl5, acctreeguid.levl6, transactions.post_date, transactions.description, splits.account_guid, splits.value_num / splits.value_denom from transactions "
 		"INNER JOIN "
 		"splits ON splits.tx_guid = transactions.guid "
 		"INNER JOIN "
 		"acctreeguid ON acctreeguid.guid1 = splits.account_guid or acctreeguid.guid2 = splits.account_guid or acctreeguid.guid3 = splits.account_guid or acctreeguid.guid4 = splits.account_guid or acctreeguid.guid5 = splits.account_guid "
 		"order by levl1, levl2, levl3, levl4, levl5, post_date;"));
-				//			boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery("SELECT id, label FROM test ORDER BY id ASC"));
+				//			boost::scoped_ptr< sql::ResultSet > res(stmt->executeQuery("SELECT id, label FROM test ORDER BY id ASC"));*/
 	Write_to_output(_T("#\t Running 'SELECT name FROM accounts'\n"));
 
 	/* Number of rows in the result set */
@@ -166,6 +154,8 @@ try {
 
 	/* Fetching data */
 	row = 0;
+	InitTree();
+	FillRoot(_T("EdTree"), 0, 0);
 	while (res->next()) {
 
 //		str.Format(_T("Fetching row %d"), row);
@@ -204,6 +194,7 @@ try {
 		str.Format(_T("%s_%s_%s_%s_%s"), atl1, atl2, atl3, atl4, atl5);
 
 			Write_to_output(str);
+			if (row == 0) AddToTree();
 
 		row++;
 	}
@@ -268,8 +259,73 @@ void CgnutreemfcDoc::Write_to_output(LPCTSTR lpszItem)
 	(pMainFrame->m_wndOutput).WriteBuildWindow(lpszItem);
 	return;
 }
+void CgnutreemfcDoc::InitTree()
+{
+	// Init atl1.....atl6 account names as Empty and handles hatl1.....hatl6 as null
+	// Init catl1..........catl6 current account names as Empty
+	atl1.Empty(), atl2.Empty(), atl3.Empty(), atl4.Empty(), atl5.Empty(), atl6.Empty();
+	catl1.Empty(), catl2.Empty(), catl3.Empty(), catl4.Empty(), catl5.Empty(), catl6.Empty();
+	hl1 = NULL, hl2 = NULL, hl3 = NULL, hl4 = NULL, hl5 = NULL, hl6 = NULL;
+}
+
+void CgnutreemfcDoc::FillRoot(LPCTSTR level, int nImage, int nSelectedImage)
+{
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+
+	// insert level0
+	hRoot = (pMainFrame->m_wndFileView).m_wndFileView.InsertItem(level, nImage, nSelectedImage); //, TVI_ROOT, TVI_SORT???
+	(pMainFrame->m_wndFileView).m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
+}
+
+void CgnutreemfcDoc::AddToTree()
+{
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+	// AddToTree()
+	// level1	If atl1 is null      all levels done, return
+	if (atl1.IsEmpty()) return;
+	// If atl1 != catl, new level1, so insert in hroot and save hatl1 and catl1
+if (atl1 != catl1)
+	{
+	hl1 = (pMainFrame->m_wndFileView).m_wndFileView.InsertItem(atl1, 0, 0, hRoot);
+	atl1 = catl1;
+	}
+	//			goto level2
+	//
+	// level2   If atl2 is null      all level 2 done, so reset catl2 to null
+	//			If atl2 != cat2, new level2, so insert in hatl1 and save hatl2 and catl2
+	//			goto level3
+	//
+	// level3   If atl3 is null      all level 3 done, so reset catl3 to null
+	//			If atl3 != cat3, new level3, so insert in hatl2 and save hatl3 and catl3
+	//			goto level4
+	//
+	// level4   If atl4 is null      all level 4 done, so reset catl4 to null
+	//			If atl4 != cat4, new level4, so insert in hatl3 and save hatl4 and catl4
+	//			goto level5
+	//
+	// level5   If atl5 is null      all level 5 done, so reset catl5 to null
+	//			If atl5 != cat5, new level5, so insert in hatl4 and save hatl5 and catl5
+	//			goto level6
+	//
+	// level6   If atl6 is null      all level 6 done, so reset catl6 to null
+	//			If atl6 != cat6, new level6, so insert in hatl5 and save hatl6 and catl6
+	//			put out error message "too many levels" and return
+
+	// insert level0
+}
 
 
+//void HTREEITEM CgnutreemfcDoc::InsertItem(CStringW level, int, int, HTREEITEM hParent)
+HTREEITEM CgnutreemfcDoc::InsertItem(LPCTSTR level, int, int, HTREEITEM hParent)
+{
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+
+	// insert level1
+//	(pMainFrame->m_wndFileView).m_wndFileView.InsertItem
+	HTREEITEM hEd = (pMainFrame->m_wndFileView).m_wndFileView.InsertItem(level, 0, 0);
+	return hEd;
+
+};
 
 // CgnutreemfcDoc serialization
 

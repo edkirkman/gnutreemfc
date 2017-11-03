@@ -18,6 +18,7 @@ public:
 // Operations
 public:
 	void Write_to_output(LPCTSTR lpszItem);
+	HTREEITEM CgnutreemfcDoc::InsertItem(LPCTSTR level, int, int, HTREEITEM hParent);
 // Overrides
 public:
 	virtual BOOL OnNewDocument();
@@ -36,6 +37,16 @@ public:
 #endif
 
 protected:
+
+	// Tree building
+	CStringW atl1, atl2, atl3, atl4, atl5, atl6;
+	CStringW catl1, catl2, catl3, catl4, catl5, catl6;
+	HTREEITEM hRoot, hl1, hl2, hl3, hl4, hl5, hl6;
+
+	void InitTree();
+	void FillRoot(LPCTSTR level, int nImage, int nSelectedImage);
+	void AddToTree();
+
 
 // Generated message map functions
 protected:

@@ -90,16 +90,23 @@ void CFileView::OnSize(UINT nType, int cx, int cy)
 
 void CFileView::FillFileView()
 {
+	// insert level0
 	HTREEITEM hRoot = m_wndFileView.InsertItem(_T("Accounts"), 0, 0); //, TVI_ROOT, TVI_SORT???
 	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 
+	// insert level1
 	HTREEITEM hAssets = m_wndFileView.InsertItem(_T("Assets"), 0, 0, hRoot);
 
+	// insert level1
 	HTREEITEM hCurrent = m_wndFileView.InsertItem(_T("Current Assets"), 0, 0, hAssets);
+
+	// insert level1
 	HTREEITEM hFixed = m_wndFileView.InsertItem(_T("Fixed Assets"), 0, 0, hAssets);
+
+	// insert level1
 	HTREEITEM hInvestments = m_wndFileView.InsertItem(_T("Investments"), 0, 0, hAssets);
 	
-
+	// insert level1
 	HTREEITEM hLiabilities = m_wndFileView.InsertItem(_T("Liabilities"), 0, 0, hRoot);
 
 	m_wndFileView.InsertItem(_T("AMEX PREF"), 2, 2, hLiabilities);

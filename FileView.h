@@ -18,6 +18,7 @@ class CFileView : public CDockablePane
 // Construction
 public:
 	CFileView();
+	CViewTree m_wndFileView;
 
 	void AdjustLayout();
 	void OnChangeVisualStyle();
@@ -25,7 +26,7 @@ public:
 // Attributes
 protected:
 
-	CViewTree m_wndFileView;
+//	CViewTree m_wndFileView;
 	CImageList m_FileViewImages;
 	CFileViewToolBar m_wndToolBar;
 

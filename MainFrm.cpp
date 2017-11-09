@@ -53,8 +53,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
 		return -1;
-
 	BOOL bNameValid;
+	// code to try and set bigger font
+	// CFont l_font;
+//	l_font.CreateFont(16, 8, 0, 0, 100, 0, 0, 0, 1, 0, 0, 0, 0, _T("MS Sans Serif"));
+	l_font.CreateFont(16, 8, 0, 0, 100, 0, 0, 0, 1, 0, 0, 0, 0, _T("TimesNewRoman"));
+	SetFont(&l_font, TRUE);
+//	LOGFONT lfOriginal;
+//	GetFont()->GetLogFont(&lfOriginal);
 
 	CMDITabInfo mdiTabParams;
 	mdiTabParams.m_style = CMFCTabCtrl::STYLE_3D_ONENOTE; // other styles available...
@@ -126,6 +132,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	m_wndFileView.EnableDocking(CBRS_ALIGN_ANY);
+	// change font in tree window
+	m_wndFileView.m_wndFileView.SetFont(&l_font);
 	m_wndClassView.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndFileView);
 	CDockablePane* pTabbedBar = NULL;

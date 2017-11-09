@@ -41,8 +41,12 @@ protected:  // control bar embedded members
 	CMFCStatusBar     m_wndStatusBar;
 	CMFCToolBarImages m_UserImages;
 //	CFileView         m_wndFileView;
+//	COutputWnd        m_wndOutput;
 	CClassView        m_wndClassView;
 	CPropertiesWnd    m_wndProperties;
+
+	// Ed's font
+	CFont l_font;
 
 // Generated message map functions
 protected:

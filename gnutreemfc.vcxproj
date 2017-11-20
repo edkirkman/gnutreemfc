@@ -194,6 +194,7 @@
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="ClassView.h" />
+    <ClInclude Include="ColumnTreeCtrl.h" />
     <ClInclude Include="examples.h" />
     <ClInclude Include="FileView.h" />
     <ClInclude Include="gnutreemfc.h" />
@@ -210,6 +211,7 @@
   <ItemGroup>
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="ClassView.cpp" />
+    <ClCompile Include="ColumnTreeCtrl.cpp" />
     <ClCompile Include="FileView.cpp" />
     <ClCompile Include="gnutreemfc.cpp" />
     <ClCompile Include="gnutreemfcDoc.cpp" />

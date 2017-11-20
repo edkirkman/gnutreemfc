@@ -1,7 +1,8 @@
 
 #pragma once
 
-#include "ViewTree.h"
+//#include "ViewTree.h"
+#include "ColumnTreeCtrl.h"
 
 class CFileViewToolBar : public CMFCToolBar
 {
@@ -18,7 +19,8 @@ class CFileView : public CDockablePane
 // Construction
 public:
 	CFileView();
-	CViewTree m_wndFileView;
+//	CViewTree m_wndFileView;
+	CCustomTreeChildCtrl m_wndFileView;
 
 	void AdjustLayout();
 	void OnChangeVisualStyle();

@@ -57,9 +57,11 @@ int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // fail to create
 	}
 
+
+
 	// Load view images:
 	m_FileViewImages.Create(IDB_FILE_VIEW, 16, 0, RGB(255, 0, 255));
-	m_wndFileView.SetImageList(&m_FileViewImages, TVSIL_NORMAL);
+	m_wndFileView.GetTreeCtrl().SetImageList(&m_FileViewImages, TVSIL_NORMAL);
 
 	m_wndToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_EXPLORER);
 	m_wndToolBar.LoadToolBar(IDR_EXPLORER, 0, 0, TRUE /* Is locked */);
@@ -75,6 +77,11 @@ int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// All commands will be routed via this control , not via the parent frame:
 	m_wndToolBar.SetRouteCommandsViaFrame(FALSE);
 
+
+	// try and add a column and header
+	//m_columnTree.InsertColumn(0, _T("Name"), LVCFMT_LEFT, 180);
+	m_wndFileView.InsertColumn(0, _T("Account"), LVCFMT_LEFT, 180);
+	m_wndFileView.InsertColumn(1, _T("Total"), LVCFMT_LEFT, 180);
 	// Fill in some static tree view data (dummy code, nothing magic here)
 	FillFileView();
 	AdjustLayout();
@@ -91,6 +98,7 @@ void CFileView::OnSize(UINT nType, int cx, int cy)
 void CFileView::FillFileView()
 {
 	return;
+#if 0
 	// insert level0
 	HTREEITEM hRoot = m_wndFileView.InsertItem(_T("Accounts"), 0, 0); //, TVI_ROOT, TVI_SORT???
 	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
@@ -132,6 +140,7 @@ void CFileView::FillFileView()
 	m_wndFileView.Expand(hFixed, TVE_EXPAND);
 	m_wndFileView.Expand(hCashback, TVE_EXPAND);
 	m_wndFileView.Expand(hInvestments, TVE_EXPAND);
+#endif
 
 }
 
@@ -262,7 +271,7 @@ void CFileView::OnChangeVisualStyle()
 	m_FileViewImages.Create(16, bmpObj.bmHeight, nFlags, 0, 0);
 	m_FileViewImages.Add(&bmp, RGB(255, 0, 255));
 
-	m_wndFileView.SetImageList(&m_FileViewImages, TVSIL_NORMAL);
+	m_wndFileView.GetTreeCtrl().SetImageList(&m_FileViewImages, TVSIL_NORMAL);
 }
 
 

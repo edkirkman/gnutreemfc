@@ -20,7 +20,7 @@ class CFileView : public CDockablePane
 public:
 	CFileView();
 //	CViewTree m_wndFileView;
-	CCustomTreeChildCtrl m_wndFileView;
+	CColumnTreeCtrl m_wndFileView;
 
 	void AdjustLayout();
 	void OnChangeVisualStyle();
